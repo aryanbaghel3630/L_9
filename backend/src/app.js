@@ -7,7 +7,7 @@ const cors= require("cors")
 const app=express()
 app.use(express.json())//middlewarre
 app.use(cors())
-////app.use(express.static("./public"))//issse backend kiurl se dono sath chale fronte aur backend
+app.use(express.static("./public"))//issse backend kiurl se dono sath chale fronte aur backend
 const noteModel= require("./models/note.model")
 /*
 post /api/notes
