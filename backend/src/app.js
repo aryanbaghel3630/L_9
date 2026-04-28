@@ -1,0 +1,84 @@
+/*
+server create karna
+*/ 
+const express = require("express")
+
+const cors= require("cors")
+const app=express()
+app.use(express.json())//middlewarre
+app.use(cors())
+
+const noteModel= require("./models/note.model")
+/*
+post /api/notes
+create new note and save data in mongodb
+req.body={title.description}
+
+ */
+app.post('/api/notes',async(req,res)=>{
+    const {title,description}=req.body
+
+  const note=  await noteModel.create({
+        title,description
+    })
+    res.status(201).json({
+        message:"note created successfully",
+        note
+    })
+}) 
+
+//get
+//fetch all the notes data from mongodb and send them in the response
+
+app.get('/api/notes',async(req,res)=>{
+    const notes=await noteModel.find()
+    
+    res.status(200).json({
+        message:"notes fetched successfully",
+        notes
+    })
+})
+
+//delete /api/notes
+//delete note with id from req.params
+app.delete('/api/notes/:id',async(req,res)=>{
+    const id=req.params.id
+    await noteModel.findByIdAndDelete(id)
+    res.status(200).json({
+        message:"note delete succesfully"
+    })
+
+})
+
+//update note use patch
+//patch/api/notes:id
+//update description of note
+// req.body main only description ayega req.body={description}
+app.patch('/api/notes/:id',async (req,res)=>{
+    const id=req.params.id;
+    const {description} = req.body;
+ 
+     await noteModel.findByIdAndUpdate(id,{description})
+     res.status(200).json({
+        message:"note updated successfully"
+     })
+
+})
+module.exports=app
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
