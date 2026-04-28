@@ -2,12 +2,12 @@
 server create karna
 */ 
 const express = require("express")
-
+const path=require("path")
 const cors= require("cors")
 const app=express()
 app.use(express.json())//middlewarre
 app.use(cors())
-
+////app.use(express.static("./public"))//issse backend kiurl se dono sath chale fronte aur backend
 const noteModel= require("./models/note.model")
 /*
 post /api/notes
@@ -26,7 +26,7 @@ app.post('/api/notes',async(req,res)=>{
         note
     })
 }) 
-
+ 
 //get
 //fetch all the notes data from mongodb and send them in the response
 
@@ -62,8 +62,13 @@ app.patch('/api/notes/:id',async (req,res)=>{
      res.status(200).json({
         message:"note updated successfully"
      })
-
+    
 })
+
+ app.use('*name',(req,res)=>{
+   // res.send("this is wild card no api ")
+ res.sendFile(path.join(__dirname, "..","/public/index.html"))
+ })
 module.exports=app
 
 
